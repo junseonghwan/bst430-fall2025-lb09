@@ -1,0 +1,126 @@
+---
+title: "LB09"
+subtitle: "Mock final"
+format: 
+  html:
+    toc: true
+    toc-location: left
+    number-sections: false
+    theme: cosmo
+    code-fold: false
+    #code-summary: "Click to show/hide code"
+    toc-depth: 4
+    fig-width: 6
+    fig-height: 4
+    fig-caption: true
+    highlight-style: tango
+---
+
+## Format
+
+Open‑book/notes. You may use course slides, your own labs/homeworks, and tidyverse cheatsheets. No internet beyond accessing the provided data files.
+Disable Github copilot on your IDE (RStudio, VSCode, etc).
+
+Submission will close today at 11:00 AM.
+You will submit a single quarto script file named `final.qmd`.
+
+You may use any R packages you like, but you must write your own code. No copying and pasting from online sources or other students.
+
+## Knowledge questions
+
+1. Let `A` and `B` be packages. Both packages offer function `foo`. How do you call the function implemented in package `B`? Provide the full syntax.
+2. What is the name of the package and the function used to convert the variable names to snake case? 
+3. What is the mechanism that R uses to manage memory?
+4. How many times does `mtcars` get copied?
+
+```{r echo=TRUE, eval=FALSE}
+foo <- function(mtcars) {
+  print(dim(mtcars))
+}
+foo(mtcars)
+```
+
+5. R uses column major order to store matrix in memory. What does this mean?
+6. Piping: if the object passed into the pipe is not the first argument of the function, how do you specify its value?
+7. What is the difference between `filter()` and `select()` functions from `dplyr` package?
+8. Describe `across()` function from `dplyr` package and provide an example of its usage.
+9. Describe and explain usage for `pivot_longer` and `pivot_wider` functions from `tidyr` package.
+10. Suppose you have two tables `x` and `y`. You want to find rows of `x` with matching elements in `y`, which function should you use if you wanted to keep only the columns from `x`?
+11. What if you wanted to keep rows of `x` where there are no  matching elements in `y`, which function should you use?
+12. What is the difference between `map` and `walk`?
+13. What is a functional? Provide an example of a functional that we have used in class.
+14. What is a function factory?
+15. Implement a function factory that adjusts the bin width of a histogram.
+
+## Data analysis
+
+Load the `flights` dataset from the `nycflights13` package.
+We will investigate the variation in the delays by season. 
+
+Answer the questions using code.
+
+#### Question 1
+
+The data is large so we will take a subset of the data.
+Using the functions from `tidyverse` take the following subsets: flights from JFK in January to February and July to August.
+
+>How many flights are there? How many carriers?
+
+>Report the number of flights by month, sorted in decreasing order.
+
+#### Question 2
+
+Aggregate the flights by carrier, sorted in decreasing order. Take the carriers with top 5 in the total number of flights. 
+
+Join the flights data with the `airlines` dataset from the same package to get the full carrier names. 
+
+>Using `ggplot2`, generate a barplot of the number of flights for each of the five carriers by month. Use stacked bars. Make sure the carrier name is used and not their carrier code.
+
+#### Question 3
+
+Implement a join to find the names of the carriers that are excluded.
+
+#### Question 4
+
+Compute statistics and generate figures to see if there is a difference in average arrival delays by month for the top 5 carriers and across the two seasons -- create a season variable with, Winter (Jan-Feb) and Summer (Jul-Aug). 
+
+Note: Subset the data with `arr_delay > 0` so that we can compare only on the delayed flights.
+
+>Which carrier has the highest average arrival delay in winter? Which one has the highest in summer?
+
+>Is there a difference in delays by season?
+
+#### Question 5
+
+There are some NAs in the `arr_delay`. 
+
+>What could the NAs represent in this context? Count the number of NAs in `arr_delay`.
+
+>What could the NAs in the `dep_delay` represent? Count the number of NAs in `dep_delay`.
+
+>Count the number of flights to find  `is.na(dep_delay)` xor `is.na(arr_delay)` is NA. What could these be? 
+
+Remove the flights with NAs in `arr_delay` or `dep_delay`.
+
+#### Question 6
+
+Create a new variable `dep_time_block` that categorizes the departure time `dep_time` into 5 blocks: 
+
+- Early morning: `<= 7`
+- Morning: `(7, 10]`
+- Afternoon: `(10, 16]`
+- Evening: `(16, 19]`
+- Night: `> 19`.
+
+#### Question 7
+
+Fit a logistic regression on the arrival delay being greater than 0 on the data from Question 6. First, define the response variable as a binary variable with `1=Delayed` and `0=OnTime`.
+Use season, carrier, and departure time block as covariates.  
+
+>Report the coefficients.
+
+>Interpret the coefficients. Which carrier is most on time? Which carried is most delayed?
+
+>Is there season effect on the delays?
+
+
